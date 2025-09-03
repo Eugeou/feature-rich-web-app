@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiService, Post } from "@/lib/api";
+import { apiService, Comment } from "@/lib/api";
 
 export function usePosts(
   page: number = 1,
@@ -53,7 +53,7 @@ export function useAddComment() {
       comment,
     }: {
       postId: number;
-      comment: Omit<Post, "id">;
+      comment: Omit<Comment, "id">;
     }) => apiService.addComment(postId, comment),
     onSuccess: (_, { postId }) => {
       // Invalidate comments for the specific post

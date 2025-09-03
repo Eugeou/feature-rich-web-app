@@ -15,7 +15,7 @@ describe("Utility Functions", () => {
 
       expect(formatDate(date)).toBe("5h ago");
     });
-    t;
+
     it('returns "Yesterday" for dates between 24-48 hours ago', () => {
       const now = new Date();
       const date = new Date(now.getTime() - 25 * 60 * 60 * 1000); // 25 hours ago
