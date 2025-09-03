@@ -4,7 +4,6 @@ import { LoginForm } from "../LoginForm";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { QueryProvider } from "@/providers/QueryProvider";
 
-// Mock the auth context
 const mockSignIn = jest.fn();
 const mockSignInWithOAuth = jest.fn();
 
@@ -37,10 +36,10 @@ describe("LoginForm", () => {
       <LoginForm onSwitchToSignUp={jest.fn()} onForgotPassword={jest.fn()} />
     );
 
-    expect(screen.getByText("Log in to Beincom")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Your email")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Your password")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Log In" })).toBeInTheDocument();
+    expect(screen.getByText("Log in to Beincom")).toBeTruthy();
+    expect(screen.getByPlaceholderText("Your email")).toBeTruthy();
+    expect(screen.getByPlaceholderText("Your password")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Log In" })).toBeTruthy();
   });
 
   it("shows OAuth provider buttons", () => {
@@ -48,9 +47,9 @@ describe("LoginForm", () => {
       <LoginForm onSwitchToSignUp={jest.fn()} onForgotPassword={jest.fn()} />
     );
 
-    expect(screen.getByText("Continue with Google")).toBeInTheDocument();
-    expect(screen.getByText("Continue with Facebook")).toBeInTheDocument();
-    expect(screen.getByText("Continue with Twitter")).toBeInTheDocument();
+    expect(screen.getByText("Continue with Google")).toBeTruthy();
+    expect(screen.getByText("Continue with Facebook")).toBeTruthy();
+    expect(screen.getByText("Continue with Twitter")).toBeTruthy();
   });
 
   it("handles form submission with valid data", async () => {
@@ -88,9 +87,7 @@ describe("LoginForm", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Please enter a valid email")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Please enter a valid email")).toBeTruthy();
     });
   });
 
@@ -106,7 +103,7 @@ describe("LoginForm", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText("Password is required")).toBeInTheDocument();
+      expect(screen.getByText("Password is required")).toBeTruthy();
     });
   });
 
@@ -150,12 +147,12 @@ describe("LoginForm", () => {
     const passwordInput = screen.getByPlaceholderText("Your password");
     const toggleButton = screen.getByRole("button", { name: "" }); // Eye icon button
 
-    expect(passwordInput).toHaveAttribute("type", "password");
+    expect(passwordInput).toHaveProperty("type", "password");
 
     fireEvent.click(toggleButton);
-    expect(passwordInput).toHaveAttribute("type", "text");
+    expect(passwordInput).toHaveProperty("type", "text");
 
     fireEvent.click(toggleButton);
-    expect(passwordInput).toHaveAttribute("type", "password");
+    expect(passwordInput).toHaveProperty("type", "password");
   });
 });

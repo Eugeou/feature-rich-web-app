@@ -1,21 +1,35 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
-import { Search, Bell, User, LogOut, Settings, Wallet } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  Search,
+  Bell,
+  User,
+  LogOut,
+  Settings,
+  Wallet,
+  Home,
+  Users,
+  Building,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function Header() {
   const { user, signOut } = useAuth();
+  const pathname = usePathname();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Navigate to search results
-      window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
+      window.location.href = `/search?q=${encodeURIComponent(
+        searchQuery.trim()
+      )}`;
     }
   };
 
@@ -23,6 +37,12 @@ export function Header() {
     await signOut();
     setIsUserMenuOpen(false);
   };
+
+  const navigationLinks = [
+    { href: "/", label: "Home", icon: Home },
+    { href: "/communities", label: "Communities", icon: Users },
+    { href: "/posts", label: "Posts", icon: Building },
+  ];
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -36,35 +56,45 @@ export function Header() {
               </div>
               <span className="text-xl font-bold text-gray-900">beincom</span>
             </Link>
-            
-            {/* Navigation */}
-            <nav className="hidden md:flex ml-10 space-x-8">
-              <Link
-                href="/"
-                className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/explore"
-                className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Explore
-              </Link>
-              <Link
-                href="/communities"
-                className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Communities
-              </Link>
-            </nav>
+
+            {/* Medal Legends Button */}
+            <button className="ml-6 flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all">
+              <span className="text-lg">🎯</span>
+              <span className="font-medium">$Medal Legends</span>
+            </button>
+          </div>
+
+          {/* Navigation Icons */}
+          <div className="flex items-center space-x-6">
+            {navigationLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "p-2 rounded-lg transition-colors",
+                    isActive
+                      ? "bg-purple-100 text-purple-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  )}
+                  title={link.label}
+                >
+                  <Icon size={24} />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Search Bar */}
           <div className="flex-1 max-w-lg mx-8">
             <form onSubmit={handleSearch} className="relative">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <Search
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
                 <input
                   type="text"
                   placeholder="Search content..."
@@ -82,6 +112,13 @@ export function Header() {
             <button className="relative p-2 text-gray-700 hover:text-purple-600 transition-colors">
               <Bell size={20} />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+
+            {/* BIC Icon */}
+            <button className="p-2 text-gray-700 hover:text-purple-600 transition-colors">
+              <div className="w-6 h-6 bg-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xs">BIC</span>
+              </div>
             </button>
 
             {/* Wallet */}

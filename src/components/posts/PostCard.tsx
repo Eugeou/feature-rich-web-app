@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { MessageCircle, Heart, Share, Bookmark } from 'lucide-react';
 import { Post } from '@/lib/api';
-import { formatDate, truncateText } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 interface PostCardProps {
   post: Post;

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { oauthProviders } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { GoogleIcon, FacebookIcon, TwitterIcon } from "./OAuthIcons";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -45,7 +46,6 @@ export function LoginForm({
       setIsLoading(true);
       setError(null);
       await signIn(data.email, data.password);
-      // Redirect to home page after successful login
       router.push("/");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Login failed");
@@ -59,7 +59,6 @@ export function LoginForm({
       setIsLoading(true);
       setError(null);
       await signInWithOAuth(provider);
-      // Redirect to home page after successful OAuth login
       router.push("/");
     } catch (error) {
       setError(error instanceof Error ? error.message : "OAuth login failed");
@@ -95,7 +94,9 @@ export function LoginForm({
               )}
               style={{ borderColor: provider.color }}
             >
-              <span className="text-xl">{provider.icon}</span>
+              {key === "google" && <GoogleIcon />}
+              {key === "facebook" && <FacebookIcon />}
+              {key === "twitter" && <TwitterIcon />}
               <span className="font-medium">Continue with {provider.name}</span>
             </button>
           ))}

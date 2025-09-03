@@ -80,8 +80,6 @@ class ApiService {
   async searchPosts(query: string, page: number = 1, limit: number = 10): Promise<Post[]> {
     const start = (page - 1) * limit;
     const end = start + limit;
-    
-    // Since JSONPlaceholder doesn't support search, we'll fetch all and filter
     const allPosts = await this.request<Post[]>('/posts');
     const filteredPosts = allPosts.filter(post => 
       post.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -101,13 +99,11 @@ class ApiService {
   }
 
   async addComment(postId: number, comment: Omit<Comment, 'id'>): Promise<Comment> {
-    // Simulate adding a comment since JSONPlaceholder doesn't persist changes
     const newComment: Comment = {
       ...comment,
-      id: Date.now(), // Generate a unique ID
+      id: Date.now(),
     };
     
-    // In a real app, this would be a POST request
     return newComment;
   }
 
@@ -133,11 +129,10 @@ class ApiService {
     currentPage: number;
   }> {
     const start = (page - 1) * limit;
-    const end = start + limit;
+    //const end = start + limit;
     
     let posts = await this.request<Post[]>(`/posts?_start=${start}&_limit=${limit}`);
     
-    // Sort posts if requested
     if (sortBy) {
       posts = posts.sort((a, b) => {
         const aValue = a[sortBy];

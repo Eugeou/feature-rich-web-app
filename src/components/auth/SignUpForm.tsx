@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { oauthProviders } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { GoogleIcon, FacebookIcon, TwitterIcon } from "./OAuthIcons";
 
 const signUpSchema = z
   .object({
@@ -49,7 +50,6 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
       setIsLoading(true);
       setError(null);
       await signUp(data.email, data.password, data.name);
-      // Redirect to home page after successful signup
       router.push("/");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Sign up failed");
@@ -63,7 +63,6 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
       setIsLoading(true);
       setError(null);
       await signInWithOAuth(provider);
-      // Redirect to home page after successful OAuth signup
       router.push("/");
     } catch (error) {
       setError(error instanceof Error ? error.message : "OAuth sign up failed");
@@ -97,7 +96,9 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
               )}
               style={{ borderColor: provider.color }}
             >
-              <span className="text-xl">{provider.icon}</span>
+              {key === "google" && <GoogleIcon />}
+              {key === "facebook" && <FacebookIcon />}
+              {key === "twitter" && <TwitterIcon />}
               <span className="font-medium">Continue with {provider.name}</span>
             </button>
           ))}
