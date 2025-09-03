@@ -26,7 +26,6 @@ export function Header() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to search results
       window.location.href = `/search?q=${encodeURIComponent(
         searchQuery.trim()
       )}`;

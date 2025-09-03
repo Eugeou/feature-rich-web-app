@@ -1,7 +1,5 @@
 "use client";
 
-import { Star } from "lucide-react";
-
 export function PremiumPromo() {
   return (
     <div className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-2xl p-6 text-white">

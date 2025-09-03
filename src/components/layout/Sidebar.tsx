@@ -1,12 +1,9 @@
 "use client";
-
-import { useState } from "react";
 import {
   Search,
   Plus,
   CheckCircle,
   Star,
-  Calendar,
   Lock,
   Home,
   Users,
@@ -16,19 +13,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { PremiumPromo } from "@/components/communities/PremiumPromo";
+import { communities } from "@/data";
 
 export function Sidebar() {
   const pathname = usePathname();
-  const [communities] = useState([
-    {
-      id: "1",
-      name: "BIC Beincom Việt Nam",
-      logo: "BIC",
-      isVerified: true,
-      hasNFT: true,
-    },
-  ]);
-
   const navigationLinks = [
     { href: "/", label: "Home", icon: Home },
     { href: "/communities", label: "Communities", icon: Users },
@@ -82,7 +70,7 @@ export function Sidebar() {
         </div>
 
         <div className="space-y-3">
-          {communities.map((community) => (
+          {communities?.map((community) => (
             <div
               key={community.id}
               className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"

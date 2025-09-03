@@ -7,9 +7,9 @@ import { z } from "zod";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { oauthProviders } from "@/lib/auth";
+import { oauthProviders } from "@/data";
 import { cn } from "@/lib/utils";
-import { GoogleIcon, FacebookIcon, TwitterIcon } from "./OAuthIcons";
+import { renderOAuthIcon } from "@/helper";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -94,9 +94,7 @@ export function LoginForm({
               )}
               style={{ borderColor: provider.color }}
             >
-              {key === "google" && <GoogleIcon />}
-              {key === "facebook" && <FacebookIcon />}
-              {key === "twitter" && <TwitterIcon />}
+              {renderOAuthIcon(key)}
               <span className="font-medium">Continue with {provider.name}</span>
             </button>
           ))}

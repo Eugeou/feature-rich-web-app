@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { PostCard } from "../PostCard";
-import { Post } from "@/lib/api";
+import { Post } from "@/types/response.type";
 
 const mockPost: Post = {
   id: 1,

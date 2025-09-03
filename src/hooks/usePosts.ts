@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiService, Comment } from "@/lib/api";
-
+import { apiService } from "@/lib/api";
+import { Comment } from "@/types/response.type";
 export function usePosts(
   page: number = 1,
   limit: number = 10,

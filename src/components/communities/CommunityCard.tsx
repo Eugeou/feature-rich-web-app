@@ -1,8 +1,7 @@
 "use client";
-
 import { useState } from "react";
-import { Check, Users, Clock, Star } from "lucide-react";
-import { Community } from "../../types/community";
+import { Check, Users, Clock } from "lucide-react";
+import { Community } from "../../types/community.type";
 
 interface CommunityCardProps {
   community: Community;
@@ -15,7 +14,6 @@ export function CommunityCard({ community }: CommunityCardProps) {
   const handleJoin = async () => {
     setIsLoading(true);
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsJoined(!isJoined);
     } catch (error) {

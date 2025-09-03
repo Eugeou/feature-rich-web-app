@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Community } from "../types/community";
+import { Community } from "../types/community.type";
 
 // Mock data for communities
 const mockCommunities: Community[] = [

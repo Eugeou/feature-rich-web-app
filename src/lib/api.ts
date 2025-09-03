@@ -1,48 +1,4 @@
-// API service for JSONPlaceholder
-export interface Post {
-  id: number;
-  title: string;
-  body: string;
-  userId: number;
-}
-
-export interface Comment {
-  id: number;
-  postId: number;
-  name: string;
-  email: string;
-  body: string;
-}
-
-export interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-}
-
-export interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message?: string;
-}
+import { Post, Comment, User } from "@/types/response.type";
 
 class ApiService {
   private baseUrl = 'https://jsonplaceholder.typicode.com';
