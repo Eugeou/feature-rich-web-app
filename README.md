@@ -2,6 +2,8 @@
 
 A modern, feature-rich social media web application built with Next.js, React.js, and TypeScript. This application integrates with the JSONPlaceholder API to provide a comprehensive social networking experience with authentication, commenting, search, and more.
 
+<img width="700" height="845" alt="image" src="https://github.com/user-attachments/assets/860821bd-1c1c-4103-bcba-98374bd9ac71" />
+
 ## 🚀 Features
 
 ### ✅ Authentication System
