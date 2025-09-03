@@ -1,7 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { authService, User, oauthProviders } from '@/lib/auth';
+import { authService } from '@/lib/auth';
+import { User } from '@/types/auth.type';
+import { oauthProviders } from '@/data';
 
 interface AuthContextType {
   user: User | null;
@@ -33,7 +35,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing user on mount
     const checkAuth = async () => {
       try {
         const currentUser = await authService.getCurrentUser();
@@ -72,10 +73,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const signInWithOAuth = async (provider: keyof typeof oauthProviders) => {
+  const signInWithOAuth = async (/*provider: keyof typeof oauthProviders*/) => {
     try {
       setIsLoading(true);
-      const user = await authService.signInWithOAuth(provider);
+      const user = await authService.signInWithOAuth(/*provider*/);
       setUser(user);
     } catch (error) {
       throw error;

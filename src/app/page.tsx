@@ -6,7 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { PostCard } from '@/components/posts/PostCard';
-import { apiService, Post } from '@/lib/api';
+import { apiService } from '@/lib/api';
+import { Post } from '@/types/response.type';
 import { Search, Filter, Edit, FileText, Grid3X3, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

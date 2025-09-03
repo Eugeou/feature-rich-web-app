@@ -6,10 +6,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
-import { apiService, Post, Comment } from '@/lib/api';
+import { apiService } from '@/lib/api';
+import { Comment } from '@/types/response.type';
 import { ArrowLeft, MessageCircle, Heart, Share, Bookmark, Send, Loader2 } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function PostDetailPage() {
   const params = useParams();
@@ -174,7 +175,7 @@ export default function PostDetailPage() {
                     <div className="flex items-start space-x-4">
                       <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                         {user.avatar ? (
-                          <img
+                          <Image
                             src={user.avatar}
                             alt={user.name}
                             className="w-10 h-10 rounded-full object-cover"

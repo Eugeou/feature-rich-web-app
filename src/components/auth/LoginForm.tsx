@@ -197,7 +197,7 @@ export function LoginForm({
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account?{" "}
+            Not have an account?{" "}
             <button
               onClick={onSwitchToSignUp}
               className="text-purple-600 hover:text-purple-700 font-medium transition-colors"

@@ -23,7 +23,7 @@ class ApiService {
   // Posts
   async getPosts(page: number = 1, limit: number = 10): Promise<Post[]> {
     const start = (page - 1) * limit;
-    const end = start + limit;
+    // const end = start + limit;
     
     const posts = await this.request<Post[]>(`/posts?_start=${start}&_limit=${limit}`);
     return posts;

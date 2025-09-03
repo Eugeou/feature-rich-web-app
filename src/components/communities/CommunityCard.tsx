@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Check, Users, Clock } from "lucide-react";
 import { Community } from "../../types/community.type";
+import Image from "next/image";
 
 interface CommunityCardProps {
   community: Community;
@@ -27,7 +28,7 @@ export function CommunityCard({ community }: CommunityCardProps) {
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200">
       {/* Community Image */}
       <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100">
-        <img
+        <Image
           src={community.image}
           alt={community.name}
           className="w-full h-full object-cover"

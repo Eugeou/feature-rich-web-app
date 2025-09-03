@@ -1,5 +1,5 @@
 import { User } from "@/types/auth.type";
-import { oauthProviders, users } from "@/data";
+import { users } from "@/data";
 
 class AuthService {
   private currentUser: User | null = null;
@@ -20,6 +20,7 @@ class AuthService {
         .toString(36)
         .substring(7)}?w=150&h=150&fit=crop&crop=face`,
       createdAt: new Date(),
+      password,
     };
 
     users.push(newUser);
@@ -33,7 +34,7 @@ class AuthService {
   async signIn(email: string, password: string): Promise<User> {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const user = users.find((u) => u.email === email);
+    const user = users.find((u) => u.email === email && u.password === password);
     if (!user) {
       throw new Error("Invalid credentials");
     }
@@ -45,7 +46,7 @@ class AuthService {
     return user;
   }
 
-  async signInWithOAuth(provider: keyof typeof oauthProviders): Promise<User> {
+  async signInWithOAuth(/*_provider: keyof typeof oauthProviders*/): Promise<User> {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const randomUser = users[Math.floor(Math.random() * users.length)];

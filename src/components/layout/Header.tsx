@@ -16,6 +16,7 @@ import {
   Building,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export function Header() {
   const { user, signOut } = useAuth();
@@ -45,19 +46,19 @@ export function Header() {
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-4 w-full">
+        <div className="flex items-center justify-between h-16 w-full">
           {/* Logo and Brand */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">BIC</span>
+              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center p-4">
+                <span className="text-white font-bold text-[16px]">BIC</span>
               </div>
               <span className="text-xl font-bold text-gray-900">beincom</span>
             </Link>
 
             {/* Medal Legends Button */}
-            <button className="ml-6 flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all">
+            <button className="ml-6 flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all mr-3">
               <span className="text-lg">🎯</span>
               <span className="font-medium">$Medal Legends</span>
             </button>
@@ -133,7 +134,7 @@ export function Header() {
                 className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 {user?.avatar ? (
-                  <img
+                  <Image
                     src={user.avatar}
                     alt={user.name}
                     className="w-8 h-8 rounded-full object-cover"

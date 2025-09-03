@@ -4,14 +4,13 @@ import { useState } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { CommunityCard } from '@/components/communities/CommunityCard';
-import { CommunitySearch } from '@/components/communities/CommunitySearch';
-import { CommunityFilter } from '@/components/communities/CommunityFilter';
-import { PremiumPromo } from '@/components/communities/PremiumPromo';
 import { useAuth } from '@/contexts/AuthContext';
+import { CommunityFilter } from '@/components/communities/CommunityFilter';
 import { useCommunities } from '@/hooks/useCommunities';
+import { CommunitySearch } from '@/components/communities/CommunitySearch';
 
 export default function CommunitiesPage() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   
