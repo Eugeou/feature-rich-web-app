@@ -1,23 +1,26 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { oauthProviders } from '@/lib/auth';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { oauthProviders } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
-const signUpSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const signUpSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Please enter a valid email"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
@@ -31,6 +34,7 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signUp, signInWithOAuth } = useAuth();
+  const router = useRouter();
 
   const {
     register,
@@ -45,8 +49,10 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
       setIsLoading(true);
       setError(null);
       await signUp(data.email, data.password, data.name);
+      // Redirect to home page after successful signup
+      router.push("/");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Sign up failed');
+      setError(error instanceof Error ? error.message : "Sign up failed");
     } finally {
       setIsLoading(false);
     }
@@ -57,8 +63,10 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
       setIsLoading(true);
       setError(null);
       await signInWithOAuth(provider);
+      // Redirect to home page after successful OAuth signup
+      router.push("/");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'OAuth sign up failed');
+      setError(error instanceof Error ? error.message : "OAuth sign up failed");
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +76,9 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Beincom</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Join Beincom
+          </h1>
           <p className="text-gray-600">Create your account to get started.</p>
         </div>
 
@@ -77,7 +87,9 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
           {Object.entries(oauthProviders).map(([key, provider]) => (
             <button
               key={key}
-              onClick={() => handleOAuthSignIn(key as keyof typeof oauthProviders)}
+              onClick={() =>
+                handleOAuthSignIn(key as keyof typeof oauthProviders)
+              }
               disabled={isLoading}
               className={cn(
                 "w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-colors",
@@ -110,11 +122,14 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
         {/* Sign Up Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Full Name
             </label>
             <input
-              {...register('name')}
+              {...register("name")}
               type="text"
               id="name"
               placeholder="Your full name"
@@ -126,29 +141,37 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
-              {...register('email')}
+              {...register("email")}
               type="email"
               id="email"
               placeholder="Your email"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
               <input
-                {...register('password')}
-                type={showPassword ? 'text' : 'password'}
+                {...register("password")}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Create a password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
@@ -162,18 +185,23 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
               </button>
             </div>
             {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Confirm Password
             </label>
             <div className="relative">
               <input
-                {...register('confirmPassword')}
-                type={showConfirmPassword ? 'text' : 'password'}
+                {...register("confirmPassword")}
+                type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
                 placeholder="Confirm your password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
@@ -187,7 +215,9 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.confirmPassword.message}
+              </p>
             )}
           </div>
 
@@ -202,14 +232,14 @@ export function SignUpForm({ onSwitchToLogin }: SignUpFormProps) {
                 Creating account...
               </div>
             ) : (
-              'Create Account'
+              "Create Account"
             )}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <button
               onClick={onSwitchToLogin}
               className="text-purple-600 hover:text-purple-700 font-medium transition-colors"

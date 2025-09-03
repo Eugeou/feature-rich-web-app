@@ -1,17 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { oauthProviders } from '@/lib/auth';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { oauthProviders } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email'),
-  password: z.string().min(1, 'Password is required'),
+  email: z.string().email("Please enter a valid email"),
+  password: z.string().min(1, "Password is required"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -21,11 +22,15 @@ interface LoginFormProps {
   onForgotPassword: () => void;
 }
 
-export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps) {
+export function LoginForm({
+  onSwitchToSignUp,
+  onForgotPassword,
+}: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signInWithOAuth } = useAuth();
+  const router = useRouter();
 
   const {
     register,
@@ -40,8 +45,10 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
       setIsLoading(true);
       setError(null);
       await signIn(data.email, data.password);
+      // Redirect to home page after successful login
+      router.push("/");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Login failed');
+      setError(error instanceof Error ? error.message : "Login failed");
     } finally {
       setIsLoading(false);
     }
@@ -52,8 +59,10 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
       setIsLoading(true);
       setError(null);
       await signInWithOAuth(provider);
+      // Redirect to home page after successful OAuth login
+      router.push("/");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'OAuth login failed');
+      setError(error instanceof Error ? error.message : "OAuth login failed");
     } finally {
       setIsLoading(false);
     }
@@ -63,8 +72,12 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Log in to Beincom</h1>
-          <p className="text-gray-600">Enter your credentials to access your account.</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Log in to Beincom
+          </h1>
+          <p className="text-gray-600">
+            Enter your credentials to access your account.
+          </p>
         </div>
 
         {/* OAuth Buttons */}
@@ -72,7 +85,9 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
           {Object.entries(oauthProviders).map(([key, provider]) => (
             <button
               key={key}
-              onClick={() => handleOAuthSignIn(key as keyof typeof oauthProviders)}
+              onClick={() =>
+                handleOAuthSignIn(key as keyof typeof oauthProviders)
+              }
               disabled={isLoading}
               className={cn(
                 "w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-colors",
@@ -105,29 +120,37 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
         {/* Login Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
-              {...register('email')}
+              {...register("email")}
               type="email"
               id="email"
               placeholder="Your email"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
               <input
-                {...register('password')}
-                type={showPassword ? 'text' : 'password'}
+                {...register("password")}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Your password"
                 className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
@@ -141,7 +164,9 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
               </button>
             </div>
             {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -166,14 +191,14 @@ export function LoginForm({ onSwitchToSignUp, onForgotPassword }: LoginFormProps
                 Logging in...
               </div>
             ) : (
-              'Log In'
+              "Log In"
             )}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <button
               onClick={onSwitchToSignUp}
               className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
