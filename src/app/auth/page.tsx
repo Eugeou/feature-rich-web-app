@@ -7,7 +7,7 @@ import { Check } from 'lucide-react';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [showPrivacyBanner, setShowPrivacyBanner] = useState(false);
+  const [showPrivacyBanner, setShowPrivacyBanner] = useState(true);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-700 flex">
