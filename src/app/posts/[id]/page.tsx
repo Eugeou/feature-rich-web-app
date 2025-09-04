@@ -1,22 +1,30 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Header } from '@/components/layout/Header';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { apiService } from '@/lib/api';
-import { Comment } from '@/types/response.type';
-import { ArrowLeft, MessageCircle, Heart, Share, Bookmark, Send, Loader2 } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Header } from "@/components/layout/Header";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { apiService } from "@/lib/api";
+import { Comment } from "@/types/response.type";
+import {
+  ArrowLeft,
+  MessageCircle,
+  Heart,
+  Share,
+  Bookmark,
+  Send,
+  Loader2,
+} from "lucide-react";
+import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 export default function PostDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
@@ -28,7 +36,7 @@ export default function PostDetailPage() {
     isLoading: postLoading,
     error: postError,
   } = useQuery({
-    queryKey: ['post', postId],
+    queryKey: ["post", postId],
     queryFn: () => apiService.getPost(postId),
     enabled: !!postId && isAuthenticated,
   });
@@ -39,24 +47,25 @@ export default function PostDetailPage() {
     isLoading: commentsLoading,
     error: commentsError,
   } = useQuery({
-    queryKey: ['comments', postId],
+    queryKey: ["comments", postId],
     queryFn: () => apiService.getComments(postId),
     enabled: !!postId && isAuthenticated,
   });
 
   // Add comment mutation
   const addCommentMutation = useMutation({
-    mutationFn: (comment: Omit<Comment, 'id'>) => apiService.addComment(postId, comment),
+    mutationFn: (comment: Omit<Comment, "id">) =>
+      apiService.addComment(postId, comment),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', postId] });
-      setCommentText('');
+      queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+      setCommentText("");
     },
   });
 
   // Redirect to auth if not authenticated
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      router.push('/auth');
+      router.push("/auth");
     }
   }, [isAuthenticated, authLoading, router]);
 
@@ -73,7 +82,7 @@ export default function PostDetailPage() {
         body: commentText.trim(),
       });
     } catch (error) {
-      console.error('Failed to add comment:', error);
+      console.error("Failed to add comment:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -97,10 +106,10 @@ export default function PostDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
+
       <div className="flex">
         <Sidebar />
-        
+
         <main className="flex-1 p-6">
           {/* Back Button */}
           <button
@@ -120,18 +129,22 @@ export default function PostDetailPage() {
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
                       <span className="text-white font-bold text-lg">
-                        {post.userId.toString().padStart(2, '0')}
+                        {post.userId.toString().padStart(2, "0")}
                       </span>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">User {post.userId}</h3>
-                      <p className="text-sm text-gray-500">{formatDate(new Date())}</p>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        User {post.userId}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {formatDate(new Date())}
+                      </p>
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mt-1">
                         Community {post.userId}
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <button className="p-2 text-gray-400 hover:text-purple-600 transition-colors">
                       <Bookmark size={20} />
@@ -143,7 +156,9 @@ export default function PostDetailPage() {
                 </div>
 
                 {/* Post Title and Body */}
-                <h1 className="text-3xl font-bold text-gray-900 mb-6">{post.title}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-6">
+                  {post.title}
+                </h1>
                 <div className="prose max-w-none">
                   <p className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
                     {post.body}
@@ -167,7 +182,9 @@ export default function PostDetailPage() {
 
               {/* Comments Section */}
               <div className="bg-white rounded-xl border border-gray-200 p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Comments</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  Comments
+                </h2>
 
                 {/* Add Comment Form */}
                 {user && (
@@ -178,6 +195,8 @@ export default function PostDetailPage() {
                           <Image
                             src={user.avatar}
                             alt={user.name}
+                            width={40}
+                            height={40}
                             className="w-10 h-10 rounded-full object-cover"
                           />
                         ) : (
@@ -209,7 +228,9 @@ export default function PostDetailPage() {
                             ) : (
                               <Send size={16} />
                             )}
-                            <span>{isSubmitting ? 'Posting...' : 'Post Comment'}</span>
+                            <span>
+                              {isSubmitting ? "Posting..." : "Post Comment"}
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -226,7 +247,9 @@ export default function PostDetailPage() {
                     </div>
                   ) : commentsError ? (
                     <div className="text-center py-8">
-                      <p className="text-red-600">Error loading comments. Please try again.</p>
+                      <p className="text-red-600">
+                        Error loading comments. Please try again.
+                      </p>
                     </div>
                   ) : comments && comments.length > 0 ? (
                     comments.map((comment) => (
@@ -239,8 +262,12 @@ export default function PostDetailPage() {
                         <div className="flex-1">
                           <div className="bg-gray-50 rounded-lg p-4">
                             <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-semibold text-gray-900">{comment.name}</h4>
-                              <span className="text-sm text-gray-500">{formatDate(new Date())}</span>
+                              <h4 className="font-semibold text-gray-900">
+                                {comment.name}
+                              </h4>
+                              <span className="text-sm text-gray-500">
+                                {formatDate(new Date())}
+                              </span>
                             </div>
                             <p className="text-gray-700">{comment.body}</p>
                           </div>
@@ -249,7 +276,9 @@ export default function PostDetailPage() {
                     ))
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+                      <p className="text-gray-500">
+                        No comments yet. Be the first to comment!
+                      </p>
                     </div>
                   )}
                 </div>

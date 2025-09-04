@@ -31,6 +31,8 @@ export function CommunityCard({ community }: CommunityCardProps) {
         <Image
           src={community.image}
           alt={community.name}
+          width={400}
+          height={300}
           className="w-full h-full object-cover"
         />
         {community.isVerified && (
