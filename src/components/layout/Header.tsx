@@ -64,7 +64,7 @@ export function Header() {
             </Link>
 
             {/* Medal Legends Button - Hidden on mobile */}
-            <button className="ml-6 hidden md:flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all">
+            <button className="ml-6 hidden md:flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all mr-5">
               <span className="text-lg">🎯</span>
               <span className="font-medium">$Medal Legends</span>
             </button>
