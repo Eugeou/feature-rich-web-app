@@ -14,6 +14,8 @@ import {
   Home,
   Users,
   Building,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -22,6 +24,7 @@ export function Header() {
   const { user, signOut } = useAuth();
   const pathname = usePathname();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
@@ -36,6 +39,7 @@ export function Header() {
   const handleSignOut = async () => {
     await signOut();
     setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   const navigationLinks = [
@@ -46,7 +50,7 @@ export function Header() {
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-4 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-center justify-between h-16 w-full">
           {/* Logo and Brand */}
           <div className="flex items-center">
@@ -54,18 +58,20 @@ export function Header() {
               <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center p-4">
                 <span className="text-white font-bold text-[16px]">BIC</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">beincom</span>
+              <span className="text-xl font-bold text-gray-900 hidden sm:block">
+                beincom
+              </span>
             </Link>
 
-            {/* Medal Legends Button */}
-            <button className="ml-6 flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all mr-3">
+            {/* Medal Legends Button - Hidden on mobile */}
+            <button className="ml-6 hidden md:flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all">
               <span className="text-lg">🎯</span>
               <span className="font-medium">$Medal Legends</span>
             </button>
           </div>
 
-          {/* Navigation Icons */}
-          <div className="flex items-center space-x-6">
+          {/* Desktop Navigation Icons - Hidden on mobile */}
+          <div className="hidden lg:flex items-center space-x-6">
             {navigationLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -87,8 +93,8 @@ export function Header() {
             })}
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-lg mx-8">
+          {/* Search Bar - Responsive */}
+          <div className="flex-1 max-w-lg mx-4 hidden md:block">
             <form onSubmit={handleSearch} className="relative">
               <div className="relative">
                 <Search
@@ -107,7 +113,15 @@ export function Header() {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Search Icon for Mobile */}
+            <button
+              className="md:hidden p-2 text-gray-700 hover:text-purple-600 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <Search size={20} />
+            </button>
+
             {/* Notifications */}
             <button className="relative p-2 text-gray-700 hover:text-purple-600 transition-colors">
               <Bell size={20} />
@@ -121,8 +135,8 @@ export function Header() {
               </div>
             </button>
 
-            {/* Wallet */}
-            <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2">
+            {/* Wallet - Hidden on small mobile */}
+            <button className="hidden sm:flex bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors items-center space-x-2">
               <Wallet size={16} />
               <span className="hidden sm:inline">Wallet</span>
             </button>
@@ -181,9 +195,66 @@ export function Header() {
                 </div>
               )}
             </div>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              className="lg:hidden p-2 text-gray-700 hover:text-purple-600 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Search Bar */}
+        {isMobileMenuOpen && (
+          <div className="pb-4 border-t border-gray-200">
+            <form onSubmit={handleSearch} className="relative mt-4">
+              <div className="relative">
+                <Search
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
+                <input
+                  type="text"
+                  placeholder="Search content..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+                />
+              </div>
+            </form>
+          </div>
+        )}
       </div>
+
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden border-t border-gray-200 bg-white">
+          <div className="px-4 py-2 space-y-1">
+            {navigationLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors",
+                    isActive
+                      ? "bg-purple-100 text-purple-700"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Icon size={20} />
+                  <span className="font-medium">{link.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
