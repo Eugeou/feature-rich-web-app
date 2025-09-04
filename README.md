@@ -1,6 +1,6 @@
 # Beincom - Feature-Rich Social Media Platform
 
-A modern, feature-rich social media web application built with Next.js, React.js, and TypeScript. This application integrates with the JSONPlaceholder API to provide a comprehensive social networking experience with authentication, commenting, search, and more.
+A modern, feature-rich social media web application built with Next.js 14, React 18, and TypeScript. This application provides a comprehensive social networking experience with authentication, commenting, search, community features, and responsive design for all devices.
 
 ## 🌐 Live Demo
 
@@ -12,56 +12,57 @@ A modern, feature-rich social media web application built with Next.js, React.js
 
 ### ✅ Authentication System
 
-- **User Registration & Login**: Complete sign-up and sign-in functionality
-- **OAuth Integration**: Support for Google, Facebook, and Twitter authentication
+- **User Registration & Login**: Complete sign-up and sign-in functionality with email/password
+- **Password Protection**: Secure authentication with required passwords
 - **Session Management**: Persistent user sessions with localStorage
-- **Protected Routes**: Only authenticated users can access post details
+- **Protected Routes**: Only authenticated users can access post details and comments
+- **Profile Management**: Update user profile information and avatar
 
 ### ✅ Social Media Features
 
 - **Post Management**: View, search, and interact with posts
 - **Commenting System**: Add comments to posts (authenticated users only)
 - **User Profiles**: User information and avatar management
-- **Community Features**: Community-based post organization
+- **Community Features**: Community-based post organization with verification badges
 
 ### ✅ Search & Filtering
 
 - **Advanced Search**: Search posts by title or content
 - **Sorting Options**: Sort posts by ID or title (ascending/descending)
-- **Real-time Results**: Instant search results with debouncing
+- **Real-time Results**: Instant search results with proper error handling
 
-### ✅ User Experience
+### ✅ Responsive Design
 
-- **Responsive Design**: Fully responsive design for all devices
-- **Modern UI/UX**: Beautiful interface inspired by Beincom design
-- **Pagination**: Efficient post loading with pagination
-- **Loading States**: Smooth loading experiences throughout the app
+- **Mobile-First**: Optimized for mobile devices with responsive breakpoints
+- **Cross-Device**: Works perfectly on mobile, tablet, and desktop
+- **Touch-Friendly**: Mobile-optimized navigation and interactions
+- **Modern UI/UX**: Beautiful interface with smooth animations
 
 ### ✅ Technical Features
 
 - **React Query**: Efficient server state management and caching
 - **TypeScript**: Full type safety and better development experience
-- **Tailwind CSS**: Utility-first CSS framework for rapid development
+- **Tailwind CSS**: Utility-first CSS framework with responsive utilities
 - **Custom Hooks**: Reusable logic for common operations
 - **Error Handling**: Comprehensive error handling and user feedback
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS, CSS Modules
+- **Styling**: Tailwind CSS with responsive design utilities
 - **State Management**: React Query (TanStack Query)
-- **Authentication**: Custom authentication system with OAuth simulation
+- **Authentication**: Custom authentication system with password protection
 - **API Integration**: JSONPlaceholder REST API
-- **Testing**: Jest, React Testing Library
 - **Icons**: Lucide React
-- **Forms**: React Hook Form with Zod validation
+- **Responsive**: Mobile-first design with Tailwind breakpoints
 
 ## 📁 Project Structure
 
 ```
 src/
-├── app/                    # Next.js app directory
+├── app/                    # Next.js 14 app directory
 │   ├── auth/              # Authentication pages
+│   ├── communities/        # Community pages
 │   ├── posts/             # Post detail pages
 │   ├── search/            # Search results page
 │   ├── globals.css        # Global styles
@@ -69,11 +70,14 @@ src/
 │   └── page.tsx           # Dashboard page
 ├── components/             # Reusable components
 │   ├── auth/              # Authentication components
-│   ├── layout/            # Layout components
+│   ├── communities/        # Community components
+│   ├── layout/            # Layout components (Header, Sidebar)
 │   └── posts/             # Post-related components
-├── contexts/               # React contexts
+├── contexts/               # React contexts (AuthContext)
+├── data/                   # Static data (users, communities, categories)
+├── helper/                 # Helper utilities
 ├── hooks/                  # Custom hooks
-├── lib/                    # Utility libraries
+├── lib/                    # Utility libraries (auth, api, utils)
 ├── providers/              # App providers
 └── types/                  # TypeScript type definitions
 ```
@@ -121,18 +125,22 @@ src/
 
 ## 🔐 Authentication
 
-The application includes a complete authentication system:
+The application includes a complete authentication system with password protection:
 
-### Demo Accounts
+### Demo Accounts (Email + Password Required)
 
-- **Email**: `john@example.com` (any password works in demo)
-- **Email**: `jane@example.com` (any password works in demo)
-- **Email**: `bob@example.com` (any password works in demo)
+| Email              | Password | Name        |
+| ------------------ | -------- | ----------- |
+| `john@example.com` | `123Abc` | John Doe    |
+| `jane@example.com` | `123Abc` | Jane Smith  |
+| `bob@example.com`  | `123Abc` | Bob Johnson |
 
-### OAuth Providers
+### Authentication Features
 
-- Google, Facebook, and Twitter integration (simulated)
-- Automatic user creation and login
+- **Password Required**: All demo accounts require the password `123Abc`
+- **Secure Login**: Email and password validation
+- **Session Persistence**: Login state maintained across browser sessions
+- **Profile Updates**: Users can update their profile information
 
 ## 📱 Features Walkthrough
 
@@ -143,20 +151,23 @@ The application includes a complete authentication system:
 - Airdrop banner with promotional content
 - Content tabs (Explore, Following, Saved)
 - Post feed with pagination
+- Responsive grid layouts for all screen sizes
 
 ### 2. Post Management
 
 - View all posts with pagination
 - Search posts by title or content
-- Sort posts by ID or title
+- Sort posts by ID or title (ascending/descending)
 - Click "Read More" to view full post
+- Responsive post cards for mobile and desktop
 
 ### 3. Post Details
 
 - Full post content display
 - Comment section for authenticated users
-- Add new comments
+- Add new comments with user authentication
 - View all comments for the post
+- Responsive layout for all devices
 
 ### 4. Search Functionality
 
@@ -164,8 +175,9 @@ The application includes a complete authentication system:
 - Real-time search results
 - Search suggestions for no results
 - Maintains search state and pagination
+- Mobile-optimized search interface
 
-### 5. User Experience
+### 5. Community Features
 
 - Responsive design for all screen sizes
 - Loading states and error handling
@@ -212,21 +224,29 @@ Create a `.env.local` file for environment-specific configuration:
 NEXT_PUBLIC_API_URL=https://jsonplaceholder.typicode.com
 ```
 
-### Tailwind CSS
+### 6. Responsive Design
 
-The application uses Tailwind CSS with custom configuration in `tailwind.config.ts`.
+- **Mobile (< 640px)**: Single column layouts, compact spacing
+- **Tablet (640px - 1024px)**: 2-3 column grids, medium spacing
+- **Desktop (1024px+)**: Full sidebar navigation, 3-4 column grids
+- **Mobile Menu**: Hamburger menu with overlay navigation
+- **Collapsible Sidebar**: Desktop sidebar with collapse functionality
 
-### TypeScript
+## 🎨 Design System
 
-Full TypeScript support with strict type checking enabled.
+### Responsive Breakpoints
 
-## 📊 Performance Features
+- **`sm:`** - Small devices (640px+)
+- **`md:`** - Medium devices (768px+)
+- **`lg:`** - Large devices (1024px+)
+- **`xl:`** - Extra large devices (1280px+)
 
-- **React Query**: Efficient data fetching and caching
-- **Code Splitting**: Automatic route-based code splitting
-- **Image Optimization**: Next.js image optimization
-- **Bundle Analysis**: Built-in bundle analyzer
-- **Lazy Loading**: Components loaded on demand
+### Color Scheme
+
+- **Primary**: Purple (#7C3AED)
+- **Secondary**: Blue (#3B82F6)
+- **Accent**: Yellow (#F59E0B)
+- **Neutral**: Gray scale (#F9FAFB to #111827)
 
 ## 🚀 Deployment
 
@@ -239,22 +259,10 @@ npm start
 
 ### Deployment Options
 
-- **Vercel**: Recommended for Next.js applications
+- **Vercel**: Recommended for Next.js applications (currently deployed)
 - **Netlify**: Static site deployment
 - **AWS Amplify**: Full-stack deployment
 - **Docker**: Containerized deployment
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -274,4 +282,4 @@ For support and questions:
 
 ---
 
-**Built with ❤️ using Next.js and React**
+**Built to test using Next.js 14, React 18, and TypeScript**
